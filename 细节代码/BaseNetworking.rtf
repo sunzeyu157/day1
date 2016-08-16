@@ -1,0 +1,54 @@
+{\rtf1\ansi\ansicpg936\cocoartf1404\cocoasubrtf130
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red110\green32\blue13;\red186\green0\blue17;\red180\green0\blue98;
+\red29\green133\blue25;\red77\green0\blue158;\red46\green13\blue110;\red68\green137\blue147;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab1348
+\pard\tx1348\pardeftab1348\pardirnatural\partightenfactor0
+
+\f0\fs56 \cf2 \CocoaLigature0 #import \cf3 "BaseNetworking.h"\cf2 \
+\cf0 \
+\cf4 @implementation\cf0  BaseNetworking\
+\cf5 //11\cf0 \
++(\cf4 id\cf0 )GET:(\cf6 NSString\cf0  *)path completionHandler:(\cf4 void\cf0  (^)(\cf4 id\cf0 , \cf6 NSError\cf0  *))completionHandler\
+\{\
+    \cf6 NSOperationQueue\cf0  *currentQueue=[\cf6 NSOperationQueue\cf0  \cf7 currentQueue\cf0 ];\
+    \cf6 NSURLSession\cf0  *session =[\cf6 NSURLSession\cf0  \cf7 sessionWithConfiguration\cf0 :[\cf6 NSURLSessionConfiguration\cf0  \cf7 defaultSessionConfiguration\cf0 ]];\
+    \cf6 NSURLSessionDataTask\cf0  *task=[session \cf7 dataTaskWithURL\cf0 :path.\cf8 zh_URL\cf0  \cf7 completionHandler\cf0 :^(\cf6 NSData\cf0  * \cf4 _Nullable\cf0  data, \cf6 NSURLResponse\cf0  * \cf4 _Nullable\cf0  response, \cf6 NSError\cf0  * \cf4 _Nullable\cf0  error) \{\
+        [currentQueue \cf7 addOperationWithBlock\cf0 :^\{\
+            \
+                \cf4 if\cf0  (error)\
+                \{\
+                    \
+                    !completionHandler?:completionHandler(\cf4 nil\cf0 ,error);\
+                    \cf7 NSLog\cf0 (\cf3 @"error=%@"\cf0 ,error);\
+                \}\
+                \cf4 else\cf0 \
+                \{\
+                    \cf6 NSError\cf0  *err=\cf4 nil\cf0 ;\
+                    \cf5 //
+\f1 \'ca\'b9\'d3\'c3
+\f0  
+\f1 \'bb\'f2\'d4\'cb\'cb\'e3\'b7\'fb
+\f0  |
+\f1 \'b1\'ed\'c3\'f7
+\f0 JSON
+\f1 \'d0\'f2\'c1\'d0\'bb\'af\'c8\'ce\'d2\'e2\'c0\'e0\'d0\'cd
+\f0 \cf0 \
+                    \
+                    \cf4 id\cf0  obj=[\cf6 NSJSONSerialization\cf0  \cf7 JSONObjectWithData\cf0 :data \cf7 options\cf0 :\cf7 NSJSONReadingAllowFragments\cf0 |\cf7 NSJSONReadingMutableLeaves\cf0 |\cf7 NSJSONReadingMutableContainers\cf0  \cf7 error\cf0 :&err];\
+                    \cf4 if\cf0  (err) \{\
+                        !completionHandler?:completionHandler(\cf4 nil\cf0 ,err);\
+                    \}\
+                    \cf4 else\cf0 \{\
+                        !completionHandler?:completionHandler(obj,\cf4 nil\cf0 );\
+                    \}\
+                    \
+                \}\
+            \}];\
+        \}];\
+        [task \cf7 resume\cf0 ];\
+        \cf4 return\cf0   task;\
+    \}\
+\
+\cf4 @end}
